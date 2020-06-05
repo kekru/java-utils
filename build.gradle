@@ -1,0 +1,51 @@
+plugins {
+    id 'org.gradle.java'
+    id 'org.gradle.maven-publish'
+    id 'java'
+}
+
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    //withJavadocJar()
+    //withSourcesJar()
+}
+
+dependencies {
+    implementation "org.slf4j:slf4j-api:1.7.25"
+    implementation "org.slf4j:slf4j-simple:1.7.9"
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compileOnly 'org.mockito:mockito-all:1.10.19'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-all:1.10.19'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+        }
+    }
+    test {
+        java {
+            srcDirs 'src/test/java'
+        }
+    }
+}
+
+publishing {
+    publications {
+        pluginPublication (MavenPublication) {
+            from        components.java
+            groupId     project.group
+            artifactId  project.name
+            version     project.version
+        }
+    }
+}
