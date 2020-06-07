@@ -20,17 +20,25 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 public class PropertyLoaderService {
 
   public void applyConfigProperties(final Object target, final Map<String, String> keyValues,
+      final String separator) {
+     applyConfigProperties(target, keyValues, separator, null);
+  }
+
+  public void applyConfigProperties(final Object target, final Map<String, String> keyValues,
       final String separator, final String startWithFilter) {
 
+    final boolean hasNoFilter = StringUtils.isBlank(startWithFilter);
     final String startWithFilterAndSeparator = startWithFilter + separator;
 
     keyValues.entrySet()
         .stream()
         .filter(
-            entry -> StringUtils.startsWithIgnoreCase(entry.getKey(), startWithFilterAndSeparator))
+            entry -> hasNoFilter ||
+                StringUtils.startsWithIgnoreCase(entry.getKey(), startWithFilterAndSeparator))
         .forEach(entry -> applyConfigProperties(
             target,
-            StringUtils.removeStartIgnoreCase(entry.getKey(), startWithFilterAndSeparator),
+            hasNoFilter ? entry.getKey()
+                : StringUtils.removeStartIgnoreCase(entry.getKey(), startWithFilterAndSeparator),
             entry.getValue(),
             separator));
   }
