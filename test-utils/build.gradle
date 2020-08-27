@@ -21,8 +21,8 @@ dependencies {
     implementation "org.slf4j:slf4j-api:1.7.25"
     compileOnly "org.slf4j:slf4j-simple:1.7.9"
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    compileOnly 'org.mockito:mockito-all:1.10.19'
     testImplementation 'junit:junit:4.12'
-    // testImplementation 'org.mockito:mockito-all:1.10.19'
 }
 
 sourceSets {
