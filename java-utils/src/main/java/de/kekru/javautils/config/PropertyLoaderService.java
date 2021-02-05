@@ -59,12 +59,10 @@ public class PropertyLoaderService {
 
       try {
         Field field = fields.get(currentKey);
-        field.setAccessible(true);
-
         if (field == null) {
-          throw new RuntimeException(
-              String.format("Field %s not found on type %s", currentKey, target.getClass()));
-        }
+          return;
+        }        
+        field.setAccessible(true);
 
         Object propertyValueOfTarget = field.get(target);
         if (propertyValueOfTarget == null) {
@@ -82,7 +80,11 @@ public class PropertyLoaderService {
     } else {
 
       Field field = fields.get(fullKey);
+      if (field == null) {
+        return;
+      }
       field.setAccessible(true);
+
       try {
         field.set(target, convertType(field.getType(), value));
       } catch (IllegalAccessException e) {
